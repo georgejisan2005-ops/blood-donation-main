@@ -1,0 +1,155 @@
+/* Footer Styles */
+.footer {
+  background: var(--gray-900);
+  color: var(--white);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 3rem 0;
+}
+
+.footer-brand {
+  grid-column: 1 / -1;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo-icon {
+  width: 2rem;
+  height: 2rem;
+  background: var(--primary-600);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-logo-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--white);
+}
+
+.footer-logo-text {
+  font-size: var(--text-xl);
+  font-weight: 700;
+}
+
+.footer-description {
+  color: var(--gray-300);
+  margin-bottom: 1rem;
+  max-width: 28rem;
+  line-height: var(--leading-relaxed);
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-social-link {
+  color: var(--gray-400);
+  transition: var(--transition-colors);
+}
+
+.footer-social-link:hover {
+  color: var(--white);
+}
+
+.footer-social-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.footer-links {
+  grid-column: 1;
+}
+
+.footer-links-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-link {
+  color: var(--gray-300);
+  text-decoration: none;
+  transition: var(--transition-colors);
+}
+
+.footer-link:hover {
+  color: var(--white);
+}
+
+.footer-contact {
+  grid-column: 2;
+}
+
+.footer-contact-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--gray-300);
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-contact-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--gray-800);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  text-align: center;
+  color: var(--gray-400);
+}
+
+.footer-copyright {
+  margin: 0;
+}
+
+/* Responsive Footer */
+@media (min-width: 768px) {
+  .footer-content {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: 1;
+  }
+
+  .footer-links {
+    grid-column: 2;
+  }
+
+  .footer-contact {
+    grid-column: 3;
+  }
+}

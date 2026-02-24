@@ -1,0 +1,53 @@
+.recipient-action-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.recipient-action-card:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-color: #d1d5db;
+}
+
+.recipient-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+}
+
+.recipient-action-icon.red {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.recipient-action-icon.blue {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.recipient-action-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.recipient-action-info p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: #4b5563;
+}

@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EDUDONOR Presentation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap");
+
+      :root {
+        --primary: #ff0000;
+        --secondary: #8b0000;
+        --background: #050505;
+        --text: #ffffff;
+        --card-bg: rgba(15, 10, 10, 0.8);
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background:
+          radial-gradient(circle at top right, #600, transparent 60%),
+          radial-gradient(circle at bottom left, #300, transparent 60%),
+          #050505;
+      }
+
+      .slide-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        perspective: 1000px;
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        opacity: 0;
+        transform: translateX(100%) scale(0.9);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 2rem;
+        box-sizing: border-box;
+        pointer-events: none; /* Prevent interaction with hidden slides */
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        pointer-events: all;
+        z-index: 10;
+      }
+
+      .slide.prev {
+        transform: translateX(-100%) scale(0.9);
+        opacity: 0;
+        z-index: 5;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #fca5a5 0%, #ef4444 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        font-weight: 800;
+      }
+
+      h2 {
+        font-size: 2rem;
+        color: #e2e8f0;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      .content {
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        padding: 2.5rem;
+        border-radius: 40px;
+        border: 2px solid var(--primary);
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.2), 0 20px 60px rgba(0, 0, 0, 0.8);
+        max-width: 90%;
+        width: 850px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) transparent;
+      }
+      .content::-webkit-scrollbar {
+        width: 6px;
+      }
+      .content::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+      }
+
+      ul {
+        text-align: left;
+        font-size: 1.25rem;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 1rem;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      li::before {
+        content: "•";
+        color: var(--primary);
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+
+      p {
+        font-size: 1.2rem;
+        line-height: 1.5;
+        color: #cbd5e1;
+      }
+
+      .controls {
+        position: absolute;
+        bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+        z-index: 20;
+      }
+
+      button {
+        background-color: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+      }
+
+      button:hover {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+      }
+
+      .progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background-color: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      /* Specific Slide Styling */
+      .team-list {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+      .team-member {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .grid-methodology {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        text-align: left;
+      }
+      .grid-item {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 3px solid var(--primary);
+      }
+      .grid-item h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        color: #fca5a5;
+      }
+      .grid-item p {
+        font-size: 1rem;
+        margin: 0;
+      }
+
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 2.5rem;
+          }
+          h2 {
+            font-size: 1.8rem;
+          }
+          .content {
+            padding: 1.5rem;
+            width: 90%;
+          }
+          ul,
+          p {
+            font-size: 1.1rem;
+          }
+          .grid-methodology {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* PDF / Print Styles */
+        @media print {
+          @page {
+            margin: 0;
+            size: landscape;
+          }
+          body {
+            background: 
+              radial-gradient(circle at top right, #600, transparent 60%),
+              radial-gradient(circle at bottom left, #300, transparent 60%),
+              #050505 !important;
+            color: var(--text) !important;
+            overflow: visible !important;
+            height: auto !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          .slide-container {
+            max-width: none !important;
+            height: auto !important;
+            overflow: visible !important;
+          }
+          .slide {
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
+            page-break-after: always !important;
+            display: flex !important;
+            height: 100vh !important;
+            color: var(--text) !important;
+            background: 
+              radial-gradient(circle at top right, #600, transparent 60%),
+              radial-gradient(circle at bottom left, #300, transparent 60%),
+              #050505 !important;
+            pointer-events: all !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          .content {
+            background: var(--card-bg) !important;
+            color: var(--text) !important;
+            border: 2px solid var(--primary) !important;
+            backdrop-filter: none !important;
+            width: 950px !important;
+            max-width: 98% !important;
+            max-height: 90vh !important;
+            overflow: visible !important;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 2rem !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          .title-slide .content {
+            padding: 3rem 2rem !important;
+          }
+          h1, h2, h3 {
+            color: var(--primary) !important;
+            -webkit-text-fill-color: var(--primary) !important;
+            background: transparent !important;
+            background-image: none !important;
+            text-shadow: none !important;
+            margin: 1rem 0 !important;
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+          h1 {
+            font-weight: 800 !important;
+            width: 100% !important;
+          }
+          p, li {
+            text-shadow: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+          .controls, .pdf-btn, .progress {
+            display: none !important;
+          }
+        }
+
+        .top-controls {
+          position: absolute;
+          top: 2rem;
+          right: 2rem;
+          z-index: 100;
+          display: flex;
+          gap: 1rem;
+        }
+        .pdf-btn {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: all 0.3s ease;
+        }
+        .pdf-btn:hover {
+          background: var(--primary);
+        }
+        .corner-logo {
+          position: absolute;
+          top: 1.5rem;
+          left: 1.5rem;
+          width: 50px;
+          height: 50px;
+          z-index: 100;
+          filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
+          border-radius: 50%;
+          border: 2px solid rgba(255, 0, 0, 0.2);
+          object-fit: cover;
+          background: var(--background);
+        }
+      </style>
+  </head>
+  <body>
+    <div class="top-controls">
+      <button class="pdf-btn" onclick="toggleFullscreen()">Full Screen</button>
+      <button class="pdf-btn" onclick="window.print()">Download PDF / Print</button>
+    </div>
+    <div class="progress" id="progressBar"></div>
+
+    <div class="slide-container">
+      <!-- Slide 1: Title -->
+      <div class="slide active title-slide" id="slide1">
+        <div class="content">
+          <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" alt="Blood Donation Icon" style="width: 150px; border-radius: 50%; margin-bottom: 2rem; filter: drop-shadow(0 0 20px rgba(255,0,0,0.5));">
+          <h1>EDUDONOR</h1>
+          <p style="color: #ff4d4d; font-weight: 800; font-size: 2rem; margin-top: 1rem;">Saving Lives Through Technology</p>
+        </div>
+      </div>
+
+      <!-- Slide 2: Project Team -->
+      <div class="slide" id="slide2">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <h2>Meet Our Team</h2>
+          <div class="team-list">
+            <div class="team-member">Dennis A S</div>
+            <div class="team-member">Elwin snato</div>
+            <div class="team-member">Suraj M R</div>
+            <div class="team-member">Abhijith Jayan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Introduction -->
+      <div class="slide" id="slide3">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 2rem; text-align: left;">
+            <div style="flex: 1;">
+              <h2>Introduction</h2>
+              <p>
+                EDUDONOR is a comprehensive web-based platform designed to bridge
+                the gap between blood donors and recipients. It facilitates seamless
+                management of blood donation camps, donor registration, and
+                emergency blood requests.
+              </p>
+              <p>
+                <strong>Goal:</strong> To save lives by streamlining the blood
+                donation process.
+              </p>
+            </div>
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_lifestyle_1770285551070.png" alt="Blood Donation Bag" style="width: 250px; border-radius: 15px; box-shadow: 0 0 20px rgba(255,0,0,0.2);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Relevance -->
+      <div class="slide" id="slide4">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 2rem; text-align: left;">
+            <div style="flex: 1;">
+              <h2>Relevance of Project</h2>
+              <ul>
+                <li>Addresses critical blood shortages efficiently.</li>
+                <li>Reduces response time in emergencies.</li>
+                <li>Digitalizes manual record-keeping for camps and donors.</li>
+                <li>Promotes awareness and accessibility.</li>
+              </ul>
+            </div>
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_relevance_impact_1770287520456.png" alt="Relevance Impact" style="width: 380px; border-radius: 25px; box-shadow: 0 0 40px rgba(255,0,0,0.3);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Methodology Section Header -->
+      <div class="slide" id="slide5">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <h1 style="font-size: 5rem;">Methodology</h1>
+          <p style="font-size: 1.5rem; color: var(--primary);">Developing a life-saving digital ecosystem step by step.</p>
+        </div>
+      </div>
+
+      <!-- Slide 6: Phase 1: Planning -->
+      <div class="slide" id="slide6">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 3rem; text-align: left;">
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/methodology_planning_icon_1770289699912.png" alt="Planning" style="width: 300px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,0,0,0.3);">
+            <div style="flex: 1;">
+              <h2>Phase 1: Planning</h2>
+              <ul style="font-size: 1.4rem;">
+                <li><strong>Requirement Gathering:</strong> Identifying the needs of donors, recipients, and admins.</li>
+                <li><strong>Scope Definition:</strong> Establishing project boundaries and feature sets.</li>
+                <li><strong>Timeline Estimation:</strong> Planning the development lifecycle.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Phase 2: Analysis -->
+      <div class="slide" id="slide7">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 3rem; text-align: left;">
+            <div style="flex: 1;">
+              <h2>Phase 2: Analysis</h2>
+              <ul style="font-size: 1.4rem;">
+                <li><strong>System Architecture:</strong> Designing a robust MERN stack infrastructure.</li>
+                <li><strong>Database Schema:</strong> Structuring MongoDB collections for speed and security.</li>
+                <li><strong>API Design:</strong> Creating clean, efficient endpoints for data flow.</li>
+              </ul>
+            </div>
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/methodology_analysis_icon_1770289728394.png" alt="Analysis" style="width: 300px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,0,0,0.3);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Phase 3: Testing -->
+      <div class="slide" id="slide8">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 3rem; text-align: left;">
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/methodology_testing_icon_1770289746480.png" alt="Testing" style="width: 300px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,0,0,0.3);">
+            <div style="flex: 1;">
+              <h2>Phase 3: Testing</h2>
+              <ul style="font-size: 1.4rem;">
+                <li><strong>Unit Testing:</strong> Verifying server logic using Jest.</li>
+                <li><strong>Linting:</strong> Maintaining code quality with ESLint/Prettier.</li>
+                <li><strong>UI Validation:</strong> Manual and automated interface verification.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Phase 4: Implementation -->
+      <div class="slide" id="slide9">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 3rem; text-align: left;">
+            <div style="flex: 1;">
+              <h2>Phase 4: Implementation</h2>
+              <ul style="font-size: 1.4rem;">
+                <li><strong>Backend:</strong> Developing Node.js/Express server and REST APIs.</li>
+                <li><strong>Frontend:</strong> Building a responsive React dashboard.</li>
+                <li><strong>Security:</strong> Implementing JWT authentication and data protection.</li>
+              </ul>
+            </div>
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/methodology_implementation_icon_1770289767295.png" alt="Implementation" style="width: 300px; border-radius: 50%; box-shadow: 0 0 30px rgba(255,0,0,0.3);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Platform Roles Header -->
+      <div class="slide" id="slide10">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <h1 style="font-size: 4rem;">Platform Roles</h1>
+          <p style="font-size: 1.5rem; color: var(--primary);">Empowering every stakeholder in the donation lifecycle.</p>
+        </div>
+      </div>
+
+      <!-- Slide 11: Donor Role -->
+      <div class="slide" id="slide11">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="text-align: left; width: 100%; max-width: 800px;">
+            <h2>Donor Role</h2>
+            <ul style="font-size: 1.3rem;">
+              <li><strong>Registration:</strong> Seamless sign-up and professional profile management.</li>
+              <li><strong>Eligibility:</strong> Automated health checks and donation interval tracking.</li>
+              <li><strong>Camp Participation:</strong> Find and register for local donation camps.</li>
+              <li><strong>Urgent Alerts:</strong> Receive instant notifications for critical blood needs.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Recipient Role -->
+      <div class="slide" id="slide12">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="text-align: left; width: 100%; max-width: 800px;">
+            <h2>Recipient Role</h2>
+            <ul style="font-size: 1.3rem;">
+              <li><strong>Blood Requests:</strong> Direct posting of urgent requirements with hospital data.</li>
+              <li><strong>Smart Matching:</strong> Instant lookup of local donors by blood group availability.</li>
+              <li><strong>Live Tracking:</strong> Real-time status updates on donor acceptances.</li>
+              <li><strong>History:</strong> Comprehensive log of received donations and request status.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 13: Admin Role -->
+      <div class="slide" id="slide13">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="text-align: left; width: 100%; max-width: 800px;">
+            <h2>Admin Role</h2>
+            <ul style="font-size: 1.3rem;">
+              <li><strong>Camp Management:</strong> Full control over scheduling and venue logistics.</li>
+              <li><strong>User Verification:</strong> Ensuring platform security through donor/recipient vetting.</li>
+              <li><strong>Analytics:</strong> High-level oversight of donation trends and successful matches.</li>
+              <li><strong>System Controls:</strong> Managing platform states, notifications, and core alerts.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 14: DFD: Operational View -->
+      <div class="slide" id="slide14">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 2.5rem; text-align: left;">
+            <div style="flex: 1;">
+              <h2>DFD: Operational View</h2>
+              <ul style="font-size: 1.2rem;">
+                <li><strong>Donors:</strong> Register and providing eligibility data.</li>
+                <li><strong>Admin:</strong> Co-ordinating camps and inventory management.</li>
+                <li><strong>Recipients:</strong> Requesting blood and track statuses.</li>
+                <li><strong>System:</strong> Backend logic secure data matching.</li>
+              </ul>
+            </div>
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_dfd_1770289489695.png" alt="Data Flow Diagram" style="width: 400px; border-radius: 20px; box-shadow: 0 0 30px rgba(255,0,0,0.3);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 15: Findings & Recommendation -->
+      <div class="slide" id="slide15">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <h2>Findings & Recommendation</h2>
+          <div style="text-align: left">
+            <p>
+              <strong>Findings:</strong> The digital platform significantly
+              reduces time to find donors compared to traditional methods.
+            </p>
+            <p><strong>Recommendation:</strong></p>
+            <ul>
+              <li>
+                Implement real-time notifications (SMS/Email) for urgent
+                requests.
+              </li>
+              <li>Expand to mobile application for better accessibility.</li>
+              <li>
+                Integrate location-based services for finding nearest camps.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 16: Conclusion -->
+      <div class="slide title-slide" id="slide16">
+        <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" class="corner-logo" alt="Logo">
+        <div class="content">
+          <div style="display: flex; align-items: center; gap: 2.5rem; text-align: left;">
+            <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/conclusion_impact_clean_1770286695763.png" alt="Community Impact" style="width: 380px; border-radius: 25px; box-shadow: 0 0 40px rgba(255,0,0,0.3);">
+            <div style="flex: 1;">
+              <h2>Conclusion</h2>
+              <p>
+                EDUDONOR successfully demonstrates how technology can be leveraged
+                for social good. By organizing and simplifying the blood donation
+                process, it creates a reliable network that can save countless
+                lives.
+              </p>
+              <div style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid var(--primary);">
+                <p style="font-size: 1rem; font-style: italic; color: #ff8080; margin: 0;">"Technology has the power to connect hearts and save lives."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 17: Thank You -->
+      <div class="slide title-slide" id="slide17">
+        <div class="content">
+          <img src="/home/alwin/.gemini/antigravity/brain/f8659889-e52a-47f2-9746-65d51d1f0e68/blood_donation_icon_dark_1770286337990.png" alt="Blood Donation Icon" style="width: 150px; border-radius: 50%; margin-bottom: 2rem; filter: drop_shadow(0 0 20px rgba(255,0,0,0.5));">
+          <h1 style="font-size: 4rem; color: #ff0000; text-shadow: 0 0 30px rgba(255,0,0,0.5);">Thank You!</h1>
+          <p style="color: #ff4d4d; font-weight: 600;">Saving Lives Together</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="prevSlide()">Previous</button>
+      <button onclick="nextSlide()">Next</button>
+    </div>
+
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".slide");
+      const progressBar = document.getElementById("progressBar");
+      const totalSlides = slides.length;
+
+      function updateSlide() {
+        slides.forEach((slide, index) => {
+          slide.classList.remove("active", "prev");
+          if (index === currentSlide) {
+            slide.classList.add("active");
+          } else if (index < currentSlide) {
+            slide.classList.add("prev");
+          }
+        });
+
+        // Update Progress Bar
+        const progress = ((currentSlide + 1) / totalSlides) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(err => {
+            alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+          });
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
+        }
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateSlide();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlide();
+        }
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "Space") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+        }
+      });
+
+      // Initialize
+      updateSlide();
+    </script>
+  </body>
+</html>
